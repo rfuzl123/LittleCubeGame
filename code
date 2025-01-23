@@ -1,0 +1,225 @@
+import pygame
+import random
+pygame.init()
+pygame.display.set_caption("Square game")
+
+scrHeight = 600
+scrWidth =  800
+
+enemyPosX = random.randint(100, 700)
+enemyPosX2 = random.randint(100, 700)
+enemyPosX3 = random.randint(100, 700)
+enemyPosY = random.randint(100, 500)
+enemyPosY2 = random.randint(100, 500)
+enemyPosY3 = random.randint(100, 500)
+
+print(" ")
+print(" ")
+print(" ")
+print(" ")
+print(" ")                                
+print(" ")
+print("10 for normal, 13 for slow, 7 for fast")
+speed = int(input("Pick a speed: "))
+
+win = pygame.display.set_mode((scrWidth, scrHeight)) 
+score = 0
+hscore = 0
+x = 50
+y = 50
+height = 50
+width = 50 
+vel = 4
+vel2 = 3
+vel3 = 4
+vel4 = 5
+dirX = 1
+dirX2 = 1
+dirX3 = -1
+dirY = 1
+dirY2 = 1  
+dirY3 = 1  
+objX = random.randint(550, 800)
+objY = random.randint(350, 600)
+
+counting = False
+count = 1
+isJump = False
+jumpCount = 10
+
+run = True
+
+print(score)
+
+while run:
+    time = pygame.time.delay(speed)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            run = False
+    
+    keys = pygame.key.get_pressed()
+
+
+    enemyPosX += vel2 * dirX
+    enemyPosY += vel2 * dirY
+
+    enemyPosX2 += vel3 * dirX2
+    enemyPosY2 += vel3 * dirY2
+
+    enemyPosX3 += vel4 * dirX3
+    enemyPosY3 += vel4 * dirY3
+
+ 
+    if enemyPosX <= 0 or enemyPosX >= scrWidth - width:
+        dirX *= -1
+    if enemyPosY <= 0 or enemyPosY >= scrHeight - height:
+        dirY *= -1  
+
+    if enemyPosX2 <= 0 or enemyPosX2 >= scrWidth - width:
+        dirX2 *= -1
+    if enemyPosY2 <= 0 or enemyPosY2 >= scrHeight - height:
+        dirY2 *= -1  
+
+    if enemyPosX3 <= 0 or enemyPosX3 >= scrWidth - width:
+        dirX3 *= -1
+    if enemyPosY3 <= 0 or enemyPosY3 >= scrHeight - height:
+        dirY3 *= -1  
+
+
+    if keys[pygame.K_a] and x > vel:
+        if isJump == True:
+            vel = 6.5
+        else: 
+            vel = 4
+        x -= vel
+    if keys[pygame.K_d] and x < scrWidth - width - vel:
+        if isJump == True:
+            vel = 6.5
+        else: 
+            vel = 4
+        x += vel
+    if isJump == False:
+        if keys[pygame.K_w] and y > vel:
+            y -= vel
+        if keys[pygame.K_s] and y < scrHeight - height - vel:
+            y += vel
+        if keys[pygame.K_SPACE] and y > vel and count == 1:
+            counting = True
+            isJump = True
+    else: 
+        if jumpCount >= -10:
+            neg = 1
+            if jumpCount < 0:
+                neg = -1
+            y -= (jumpCount ** 2) * 0.2   * neg
+            jumpCount -= 1
+        else: 
+            isJump = False
+            jumpCount = 10
+    
+    if counting == True: 
+        count += 1
+    if count == 50:
+        count = 1
+        counting = False
+    win.fill((0, 0, 0))
+    enemy = pygame.draw.rect(win, (255,0,0), (enemyPosX, enemyPosY, width, height))
+    enemy2 = pygame.draw.rect(win, (255,255,0), (enemyPosX2, enemyPosY2, width, height))
+    enemy3 = pygame.draw.rect(win, (255,192,203), (enemyPosX3, enemyPosY3, width, height))
+    player = pygame.draw.rect(win, (50, 255, 50), (x, y, width, height))
+    objective = pygame.draw.circle(win, (73, 116, 230), (objX, objY,), 20)
+    if player.colliderect(objective):
+        objX = random.randint(1, 800)
+        objY = random.randint(1, 600)
+        score += 1
+        print(score)
+    if player.colliderect(enemy):
+        print(" ")
+        print(" ")
+        print(" ")
+        print(" ")
+        print(" ")
+        print(" ")
+        print("Your score was " + str(score))
+        if score > hscore:
+            hscore = score
+            print("You beat the high score!")
+        elif score == hscore:
+            print("You tied the highscore.")
+        elif score < hscore:
+            print("You were under the high score.")
+        print("The high score is: " + str(hscore))
+        print(" ")
+        score = 0
+        print(score)
+        objX = random.randint(550, 800)
+        objY = random.randint(350, 600)
+        x = 50
+        y = 50
+        enemyPosX = random.randint(100, 700)
+        enemyPosY = random.randint(100, 500)
+        enemyPosX2 = random.randint(100, 700)
+        enemyPosY2 = random.randint(100, 500)
+        enemyPosX3 = random.randint(100, 700)
+        enemyPosY3 = random.randint(100, 500)
+    if player.colliderect(enemy2):
+        print(" ")
+        print(" ")
+        print(" ")
+        print(" ")
+        print(" ")
+        print(" ")
+        print("Your score was " + str(score))
+        if score > hscore:
+            hscore = score
+            print("You beat the high score!")
+        elif score == hscore:
+            print("You tied the highscore.")
+        elif score < hscore:
+            print("You were under the high score.")
+        print("The high score is: " + str(hscore))
+        print(" ")
+        score = 0
+        print(score)
+        objX = random.randint(550, 800)
+        objY = random.randint(350, 600)
+        x = 50
+        y = 50
+        enemyPosX = random.randint(100, 700)
+        enemyPosY = random.randint(100, 500)
+        enemyPosX2 = random.randint(100, 700)
+        enemyPosY2 = random.randint(100, 500)
+        enemyPosX3 = random.randint(100, 700)
+        enemyPosY3 = random.randint(100, 500)
+    if player.colliderect(enemy3):
+        print(" ")
+        print(" ")
+        print(" ")
+        print(" ")
+        print(" ")
+        print(" ")
+        print("Your score was " + str(score))
+        if score > hscore:
+            hscore = score
+            print("You beat the high score!")
+        elif score == hscore:
+            print("You tied the highscore.")
+        elif score < hscore:
+            print("You were under the high score.")
+        print("The high score is: " + str(hscore))
+        print(" ")
+        score = 0
+        print(score)
+        objX = random.randint(550, 800)
+        objY = random.randint(350, 600)
+        x = 50
+        y = 50
+        enemyPosX = random.randint(100, 700)
+        enemyPosY = random.randint(100, 500)
+        enemyPosX2 = random.randint(100, 700)
+        enemyPosY2 = random.randint(100, 500)
+        enemyPosX3 = random.randint(100, 700)
+        enemyPosY3 = random.randint(100, 500)
+    
+    pygame.display.update()
+pygame.quit()
